@@ -3,6 +3,7 @@ using System.Data;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace _2Lab1OOP;
 
@@ -19,11 +20,20 @@ public partial class App : Application
         var response = await client.SendAsync(request);
         var json = await response.Content.ReadAsStringAsync();
         var posts = JsonSerializer.Deserialize<List<Post>>(json)!;
+        
 
         var strUrl = posts[Random.Shared.Next(0, posts.Count)].jpeg_url;
+        request = new HttpRequestMessage(HttpMethod.Get, strUrl);
+        response = await client.SendAsync(request);
+        var imageStream = await response.Content.ReadAsStreamAsync();
+        var bitmapImage = new BitmapImage();
+        bitmapImage.BeginInit();
+        bitmapImage.StreamSource = imageStream;
+        bitmapImage.EndInit();
+        
         Console.WriteLine(strUrl);
         
-        var mainWindow = new MainWindow(new Uri(strUrl));
+        var mainWindow = new MainWindow(bitmapImage);
         mainWindow.Show();
     }
 }

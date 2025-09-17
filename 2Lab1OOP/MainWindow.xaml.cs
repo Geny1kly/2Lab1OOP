@@ -16,11 +16,11 @@ namespace _2Lab1OOP;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow(Uri url)
+    public MainWindow(BitmapImage bitmapImage)
     {
         InitializeComponent();
         var imageBrush = new ImageBrush();
-        imageBrush.ImageSource = new BitmapImage(url);
+        imageBrush.ImageSource = bitmapImage;
         imageBrush.Stretch = Stretch.UniformToFill;
         Grid_Main.Background = imageBrush;
     }
